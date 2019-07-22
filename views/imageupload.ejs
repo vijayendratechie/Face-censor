@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="imageupload.css"></a>
+		<script type="text/javascript" src="imageupload.js"></script>
+		<script src="https://stackml.com/library-js/stackml.min.js"></script>	
+</head>
+<body>
+
+	<div class="container">
+		<input type='file' onchange="readURL(this);" />
+		<button id="predict">predict</button>
+		<!--<canvas id="myCanvas" width="500 px" height="600 px" style="border:1px solid #000000; margin-top: 20px">-->
+			<img id="pic" src="http://placehold.it/180" alt="your image" />
+		<!--</canvas>-->
+	</div>
+</body>
+</html>
