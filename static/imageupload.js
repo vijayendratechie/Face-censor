@@ -39,6 +39,6 @@ async function predict()
 	    console.log(results);
 
 	    // draw output keypoints in the image
-	    model.draw(document.getElementById('pic'), results);
+	    model.draw(document.getElementById('canvas'),document.getElementById('pic'), results);
 	});	
 }
