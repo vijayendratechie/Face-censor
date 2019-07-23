@@ -12,13 +12,19 @@
 
 	<div class="container">
 		<input type='file' onchange="readURL(this);" />
-		<button id="predict">predict</button>
+		<button id="censor">emoji censor</button>
+		<button id="expressioncensor">emoji based on expression</button>
 		<!--<canvas id="myCanvas" width="500 px" height="600 px" style="border:1px solid #000000; margin-top: 20px">-->
 			<img id="pic" src="http://placehold.it/180" alt="your image" />
 			<canvas style="margin: 0 auto;" id="canvas"></canvas>
 		<!--</canvas>-->
 
-			<img id="emoji" src="laugh.jpg" alt="laugh emoji" />
+			<img id="angry" src="angry.png" alt="angry emoji" hidden="" />
+			<img id="happy" src="happy.png" alt="happy emoji" hidden="" />
+			<img id="laugh" src="laugh.png" alt="laugh emoji" hidden="" />
+			<img id="sad" src="sad.png" alt="sad emoji" hidden="" />
+			<img id="suprise" src="suprise.png" alt="suprise emoji" hidden="" />
+			<img id="allother" src="shy.png" alt="shy emoji" hidden="" />
 	</div>
 </body>
 </html>
