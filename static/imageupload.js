@@ -45,10 +45,10 @@ function drawcanvas(results)
 	for(let i=0;i<results.length;i++)
 	{
 		var coord = results[i].box;
-		//ctx.drawImage(emoji, coord.x,coord.y,coord.width,coord.height);	
+		ctx.drawImage(emoji, coord.x,coord.y,coord.width,coord.height);	
 		//ctx.fillRect(coord.x,coord.y,coord.width,coord.height);
-		var str = String.fromCodePoint(0x1F604)
-		ctx.strokeText(str,coord.x,coord.y,coord.width);
+		//var str = String.fromCodePoint(0x1F604)
+		//ctx.strokeText(str,coord.x,coord.y,coord.width);
 	}
 }
 
