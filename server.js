@@ -25,3 +25,7 @@ app.get("/",function(req,res)
 	res.render("imageupload");
 })
 
+app.get("/canvas",function(req,res)
+{
+	res.render("canvas");
+})

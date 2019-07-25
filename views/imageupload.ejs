@@ -1,30 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
+		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		
+		<!-- jquery and bootstrap js links included at end of file also which allows modal to load-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+				
 		<link rel="stylesheet" type="text/css" href="imageupload.css"></a>
 		<script type="text/javascript" src="imageupload.js"></script>
+		
+
 		<script src="https://stackml.com/library-js/stackml.min.js"></script>	
 </head>
 <body>
 
+	<div class="header">
+		<h1 align="center">Face Censor</h1>
+	</div>
+
+	<!--<nav class="navbar navbar-dark bg-dark">
+		<input type='file' accept="image/*" onchange="readURL(this);" style="padding-right: 0px; margin-right: 0px" />
+		<button id="censor" style="padding-left: 0px;margin-left: 0px">emoji censor</button>
+		<button id="expressioncensor">emoji based on expression</button>
+		<button id="selectedfacesbtn" style="display: none">selected faces</button>
+	</nav>-->
+
+	<nav class="navbar navbar-expand-sm" style="background-color : #333333">
+	  <!-- Links -->
+	  <ul class="navbar-nav" style="padding-left: 280px">
+	    <li class="nav-item" >
+	      <font size="4" style="color: white"><b>Upload image : </b></font><input type='file' accept="image/*" onchange="readURL(this);" style="margin-left: 20px" />
+	    </li>
+	    <li class="nav-item">
+			<button id="censor" style="margin-left: 27px; margin-top: 7px; padding-bottom: 3px">emoji censor</button>
+	    </li>
+	    <li class="nav-item">
+	    	<button id="expressioncensor" btn="btn" style="color: black;margin-left: 27px;margin-top: 7px; padding-bottom: 3px">emoji based on expression</button>
+	    </li>
+	    <li>
+	    	<button id="selectedfacesbtn" style="margin-left: 27px;margin-top: 7px; padding-bottom: 3px;display: none">selected faces</button> 		
+	    </li>
+	  </ul>
+	</nav>
+
+
+
+			
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+          	<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+          	<h4 class="modal-title">Mulitple faces detected in the image. </h4>
+          </div>
+	      <div class="modal-body">
+	      	<div align="center">Click on the faces which are to be censored!!</div>
+	      	<input id="resultdata" value="" hidden=""> <br>
+	      		<div align="center">
+	      			<button  type="button" class="btn btn-dark" data-dismiss="modal" onclick="userselect('all')">ALL</button>
+	      			<button type="button" style="margin-left: 20px" class="btn btn-dark" data-dismiss="modal" onclick="userselect('selected')">Select</button>
+	      		</div>
+	      </div>		      
+	    </div>
+	  </div>
+	</div>
+
 	<div class="container">
-		<input type='file' onchange="readURL(this);" />
+
+		<!--<input type='file' onchange="readURL(this);" />
 		<button id="censor">emoji censor</button>
 		<button id="expressioncensor">emoji based on expression</button>
-		<!--<canvas id="myCanvas" width="500 px" height="600 px" style="border:1px solid #000000; margin-top: 20px">-->
-			<img id="pic" src="http://placehold.it/180" alt="your image" />
-			<canvas style="margin: 0 auto;" id="canvas"></canvas>
-		<!--</canvas>-->
+		<button id="selectedfaces">selected faces</button>-->
 
-			<img id="angry" src="angry.png" alt="angry emoji" hidden="" />
-			<img id="happy" src="happy.png" alt="happy emoji" hidden="" />
-			<img id="laugh" src="laugh.png" alt="laugh emoji" hidden="" />
-			<img id="sad" src="sad.png" alt="sad emoji" hidden="" />
-			<img id="suprise" src="suprise.png" alt="suprise emoji" hidden="" />
-			<img id="allother" src="shy.png" alt="shy emoji" hidden="" />
+		<h4 id="msg" align="center" style="padding-top: 30px"><b>Upload an image</b></h4>
+		
+
+
+		<img id="pic" src="" alt="your image" style="border:1px solid black; display: none" class="center" />
+		<canvas style="margin: 0 auto; display: none;border:1px solid black;" id="canvas" class="center"></canvas>		  
+
+	
+
+		<img id="angry" src="angry.png" alt="angry emoji" hidden="" />
+		<img id="happy" src="happy.png" alt="happy emoji" hidden="" />
+		<img id="laugh" src="laugh.png" alt="laugh emoji" hidden="" />
+		<img id="sad" src="sad.png" alt="sad emoji" hidden="" />
+		<img id="suprise" src="suprise.png" alt="suprise emoji" hidden="" />
+		<img id="allother" src="shy.png" alt="shy emoji" hidden="" />
 	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

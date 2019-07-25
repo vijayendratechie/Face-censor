@@ -1,3 +1,4 @@
+
 function readURL(input)
 {
 	//console.log(input.files);
@@ -7,13 +8,19 @@ function readURL(input)
 
 	    reader.onload = function (e)
 	    {
-	        $('#pic').attr('src', e.target.result);        
-
+	    	xcoord.length = 0;
+	    	$("#selectedfacesbtn").css("display","none");	
+	    	$('#pic').attr('src', e.target.result);  
+	        $("#msg").html("<b>Uploaded image</b>");      
+	    	$("#pic").css("display","block");
+	    	$("#canvas").css("display","none");
 	    };
 
 	    reader.readAsDataURL(input.files[0]);
 	}
 }
+
+
 $(document).ready(function()
 {
 	
@@ -27,8 +34,6 @@ $(document).ready(function()
 
 	//console.log(JSON.stringify(emojis));
 
-
-
 	$("#censor").click(function()
 	{	
 		facepredict();
@@ -41,26 +46,53 @@ $(document).ready(function()
 		//drawcanvas();
 	})
 
+	$("#btn1").click(function()
+	{	
+		alert("hello");
+		$('#exampleModal').modal("show")
+	})
+
 });
 
-function drawfacecanvas(results)
+function drawimg(canvas,ctx)
 {
-	console.log(JSON.stringify(results));
-	
-	var canvas = document.getElementById('canvas');
-	
-	
+	$("#canvas").css("display","block");
 	var pic = document.getElementById('pic');
 	var width = pic.naturalWidth;
 	var height = pic.naturalHeight;
 
 	canvas.width = width;
 	canvas.height = height;
-	
-	var ctx = canvas.getContext("2d");
 
-	var emoji = document.getElementById('happy'); 
 	ctx.drawImage(pic, 0, 0,width,height);
+	//$("#pic").hide();
+	$("#pic").css("display","none");
+}
+
+function userselect(value)
+{
+	console.log("value is :"+value);
+	var resultsdata = $("#resultdata").val();
+	var	resultsobj = JSON.parse(resultsdata);
+
+	if(value == 'all')
+	{		
+		allfaces(resultsobj);
+	}
+	else if(value == "selected")
+	{
+		$("#selectedfacesbtn").css("display","block");		
+		selectedfaces(resultsobj);	
+	}
+}
+
+function allfaces(results)
+{
+	var emoji = document.getElementById('happy'); 
+
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext("2d");
+	
 	
 	for(let i=0;i<results.length;i++)
 	{
@@ -70,6 +102,88 @@ function drawfacecanvas(results)
 		//var str = String.fromCodePoint(0x1F604)
 		//ctx.strokeText(str,coord.x,coord.y,coord.width);
 	}
+
+	$("#msg").html("<b>Faces censored: </b>");
+}
+
+
+var xcoord = [];
+function selectedfaces(results)
+{
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext("2d");
+
+	var rect = canvas.getBoundingClientRect();
+	
+	
+	$("#canvas").click(function(event)
+	{		
+		//console.log("hi");
+		//make changes for y coord
+		var x = event.clientX - rect.left;
+		var y = event.clientY - rect.top ;
+		
+				
+		for(let i=0;i<results.length;i++)
+		{
+			let coord = results[i].box;		
+			if((x >= coord.x && x <= (coord.x+coord.width)) && (y>=coord.y && y<=(coord.y+coord.height)))
+			{
+				xcoord.push(coord);
+			}
+		}
+
+		console.log("xcoord araay is :"+ JSON.stringify(xcoord));
+		var temp = new Set(xcoord)
+    	xcoord = Array.from(temp);
+    	//console.log("selectedfaces are : "+JSON.stringify(xcoord));
+    })
+
+
+    $("#selectedfacesbtn").click(function()
+    {
+ 		var emoji = document.getElementById('happy'); 
+		//console.log("selectedfaces are : "+JSON.stringify(xcoord));
+		if(xcoord.length == 0)
+		{
+			alert("No face selected");
+		}
+		else
+		{
+			for(let i=0;i<xcoord.length;i++)
+			{
+				let coord = xcoord[i];
+				ctx.drawImage(emoji, coord.x,coord.y,coord.width,coord.height);	
+				//ctx.fillRect(coord.x,coord.y,coord.width,coord.height);
+				//var str = String.fromCodePoint(0x1F604)
+				//ctx.strokeText(str,coord.x,coord.y,coord.width);
+			}
+			xcoord.length = 0;
+			$("#msg").html("<b>Faces censored: </b>");	
+		}			    	
+    })
+}
+
+function drawfacecanvas(results)
+{
+	console.log(JSON.stringify(results));	
+	
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext("2d");
+
+	drawimg(canvas,ctx);
+
+	if(results.length > 1)
+	{
+		//alert("\nmultiple faces . click on faces which are to be censored");
+				
+		$('#exampleModal').modal("show");
+		$("#resultdata").val(JSON.stringify(results));		
+	}
+	else
+	{
+		allfaces(results);			
+	}	
 }
 
 async function facepredict()
@@ -87,7 +201,7 @@ async function facepredict()
 	model.detect(document.getElementById('pic'),function callbackPredict(err, faceresults)
 	{
 	    
-	    //console.log("Face censor : " + JSON.stringify(faceresults));
+	    //console.log("Face censor : " + JSON.stringify(faceresults.outputs.length));
 	   
 		drawfacecanvas(faceresults.outputs);
 	});	
@@ -95,22 +209,14 @@ async function facepredict()
 
 function drawexpressioncanvas(results,emojisobj)
 {
-	console.log("Expressions results : " + JSON.stringify(emojisobj));
-	
+	//console.log("Expressions results : " + JSON.stringify(emojisobj));
+
+
 	var canvas = document.getElementById('canvas');
-	var emoji;
-	
-	var pic = document.getElementById('pic');
-	var width = pic.naturalWidth;
-	var height = pic.naturalHeight;
+	var ctx = canvas.getContext("2d");
 
-	canvas.width = width;
-	canvas.height = height;
+	drawimg(canvas,ctx);
 	
-	var ctx = canvas.getContext("2d"); 
-	ctx.drawImage(pic, 0, 0,width,height);
-	//ctx.drawImage(emojisobj.angry, 0, 0,50,50);
-
 	
 	for(let i=0;i<results.length;i++)
 	{
@@ -133,12 +239,14 @@ function drawexpressioncanvas(results,emojisobj)
 			console.log("emoji found in my object");
 			//emoji = emojisobj.tempexpression;
 			ctx.drawImage(emojisobj[tempexpression], coord.x,coord.y,coord.width,coord.height);	
+			$("#msg").html("<b>Faces censored depending on expressions: </b>");
 		}
 		else
 		{
 			console.log("emoji not found in my object");
 			//emoji = emojisobj.allother;
-			ctx.drawImage(emojisobj.allother, coord.x,coord.y,coord.width,coord.height);	
+			ctx.drawImage(emojisobj.allother, coord.x,coord.y,coord.width,coord.height);
+			$("#msg").html("<b>Faces censored depending on expressions: </b>");	
 		}
 
 		//console.log("coord is "+JSON.stringify(coord));		
