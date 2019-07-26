@@ -8,6 +8,7 @@ function readURL(input)
 
 	    reader.onload = function (e)
 	    {
+	    	$('<div id="cover"><div id="spinner" class="spinner-grow text-light"></div></div>').insertAfter(".container");
 	    	xcoord.length = 0;
 	    	$('#pic').attr('src', e.target.result);  
 	    	$("#msg").html("<b>Uploaded image</b>");      
@@ -15,6 +16,12 @@ function readURL(input)
 	    	$("#pic").css("display","block");	    	
 	    	$("#censor").attr("disabled",false);
 	    	$("#expressioncensor").attr("disabled",false);
+	    
+	    	//to get window height after resizing
+	    	var windowheight = $("body").height();
+	    	console.log("resize window height"+$("body").height())
+	    	$("#cover").height(windowheight);   	
+
 	    };
 
 	    reader.readAsDataURL(input.files[0]);
@@ -25,6 +32,7 @@ function readURL(input)
 
 $(document).ready(function()
 {
+	console.log("original window height"+$("body").height())
 	var emojisobj = { angry : document.getElementById("angry") ,
 				   happy : 	document.getElementById("happy") ,
 				   laugh : 	document.getElementById("laugh") ,
@@ -37,21 +45,23 @@ $(document).ready(function()
 
 	$("#censor").click(function()
 	{	
+		$("#cover").fadeIn(100);
 		facepredict();
 		//drawcanvas();
 	})
 
 	$("#expressioncensor").click(function()
 	{	
+		$("#cover").fadeIn(100);
 		expressionpredict(emojisobj);
 		//drawcanvas();
 	})
 
-	$("#btn1").click(function()
+	/*$("#btn1").click(function()
 	{	
-		alert("hello");
+		//alert("hello");
 		$('#exampleModal').modal("show")
-	})
+	})*/
 
 });
 
@@ -73,7 +83,7 @@ function drawimg(canvas,ctx)
 
 function userselect(value)
 {
-	console.log("value is :"+value);
+	//console.log("value is :"+value);
 	var resultsdata = $("#resultdata").val();
 	var	resultsobj = JSON.parse(resultsdata);
 
@@ -127,7 +137,7 @@ function selectedfaces(results)
 		//console.log("hi");
 		//make changes for y coord
 
-		console.log("xcoord as soon as canvas is clicked :"+ JSON.stringify(xcoord));
+		//console.log("xcoord as soon as canvas is clicked :"+ JSON.stringify(xcoord));
 
 		var x = event.clientX - rect.left;
 		var y = event.clientY - rect.top ;
@@ -142,10 +152,10 @@ function selectedfaces(results)
 			}
 		}
 
-		console.log("xcoord araay is :"+ JSON.stringify(xcoord));
+		//console.log("xcoord araay is :"+ JSON.stringify(xcoord));
 		var temp = new Set(xcoord)
     	xcoord = Array.from(temp);
-    	console.log("selectedfaces after applying set : "+JSON.stringify(xcoord));
+    	//console.log("selectedfaces after applying set : "+JSON.stringify(xcoord));
 
 
     	var emoji = document.getElementById('happy');
@@ -175,7 +185,7 @@ function selectedfaces(results)
 
 function drawfacecanvas(results)
 {
-	console.log(JSON.stringify(results));	
+	//console.log(JSON.stringify(results));	
 
 	$(".canvas").remove();
 	$('<canvas id="canvas" class="center canvas" style="margin: 0 auto; display: none;border:1px solid black;" data-toggle="tooltip" ></canvas>').insertAfter("#pic");
@@ -183,6 +193,7 @@ function drawfacecanvas(results)
 	var ctx = canvas.getContext("2d");
 
 	drawimg(canvas,ctx);
+	$("#cover").fadeOut(100);
 
 	if(results.length > 1)
 	{
@@ -218,6 +229,8 @@ async function facepredict()
 	});	
 }
 
+//Expression preditct
+
 function drawexpressioncanvas(results,emojisobj)
 {
 	//console.log("Expressions results : " + JSON.stringify(emojisobj));
@@ -229,7 +242,7 @@ function drawexpressioncanvas(results,emojisobj)
 
 	drawimg(canvas,ctx);
 	
-	
+	$("#cover").fadeOut(100);
 	for(let i=0;i<results.length;i++)
 	{
 		let coord = results[i].detection.box;
@@ -245,17 +258,17 @@ function drawexpressioncanvas(results,emojisobj)
 			}
 		}
 
-		console.log("tempexpression is : "+ tempexpression);
+		//console.log("tempexpression is : "+ tempexpression);
 		if(emojisobj.hasOwnProperty(tempexpression))
 		{
-			console.log("emoji found in my object");
+			//console.log("emoji found in my object");
 			//emoji = emojisobj.tempexpression;
 			ctx.drawImage(emojisobj[tempexpression], coord.x,coord.y,coord.width,coord.height);	
 			$("#msg").html("<b>Faces censored depending on expressions: </b>");
 		}
 		else
 		{
-			console.log("emoji not found in my object");
+			//console.log("emoji not found in my object");
 			//emoji = emojisobj.allother;
 			ctx.drawImage(emojisobj.allother, coord.x,coord.y,coord.width,coord.height);
 			$("#msg").html("<b>Faces censored depending on expressions: </b>");	
