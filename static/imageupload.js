@@ -17,10 +17,7 @@ function readURL(input)
 	    	$("#censor").attr("disabled",false);
 	    	$("#expressioncensor").attr("disabled",false);
 	    
-	    	//to get window height after resizing
-	    	var windowheight = $("body").height();
-	    	console.log("resize window height"+$("body").height())
-	    	$("#cover").height(windowheight);   	
+	    	//to get window height after resizing    	   	
 
 	    };
 
@@ -28,6 +25,21 @@ function readURL(input)
 	}
 }
 
+
+function setwindowheight()
+{
+	var windowheight = $(window).height();	
+	var bodyheight = $("body").height();
+	console.log("resized windowheight : "+$(window).height());
+	if(windowheight > bodyheight)
+	{
+		$("#cover").height($(window).height());	
+	}
+	else
+	{
+		$("#cover").height($("body").height());	
+	}
+}
 
 
 $(document).ready(function()
@@ -45,6 +57,7 @@ $(document).ready(function()
 
 	$("#censor").click(function()
 	{	
+		setwindowheight();
 		$("#cover").fadeIn(100);
 		facepredict();
 		//drawcanvas();
@@ -52,6 +65,7 @@ $(document).ready(function()
 
 	$("#expressioncensor").click(function()
 	{	
+		setwindowheight();
 		$("#cover").fadeIn(100);
 		expressionpredict(emojisobj);
 		//drawcanvas();
