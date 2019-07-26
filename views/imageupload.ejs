@@ -3,7 +3,8 @@
 <head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 		<!-- jquery and bootstrap js links included at end of file also which allows modal to load-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -35,14 +36,11 @@
 	      <font size="4" style="color: white"><b>Upload image : </b></font><input type='file' accept="image/*" onchange="readURL(this);" style="margin-left: 20px" />
 	    </li>
 	    <li class="nav-item">
-			<button id="censor" style="margin-left: 27px; margin-top: 7px; padding-bottom: 3px">emoji censor</button>
+			<button id="censor" style="margin-left: 30px; margin-top: 7px; padding-bottom: 3px" disabled="">emoji censor</button>
 	    </li>
 	    <li class="nav-item">
-	    	<button id="expressioncensor" btn="btn" style="color: black;margin-left: 27px;margin-top: 7px; padding-bottom: 3px">emoji based on expression</button>
-	    </li>
-	    <li>
-	    	<button id="selectedfacesbtn" style="margin-left: 27px;margin-top: 7px; padding-bottom: 3px;display: none">selected faces</button> 		
-	    </li>
+	    	<button id="expressioncensor" style="margin-left: 30px;margin-top: 7px; padding-bottom: 3px" disabled="">emoji based on expression</button>
+	    </li>	    
 	  </ul>
 	</nav>
 
@@ -82,7 +80,7 @@
 
 
 		<img id="pic" src="" alt="your image" style="border:1px solid black; display: none" class="center" />
-		<canvas style="margin: 0 auto; display: none;border:1px solid black;" id="canvas" class="center"></canvas>		  
+				  
 
 	
 

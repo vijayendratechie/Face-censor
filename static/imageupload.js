@@ -9,11 +9,12 @@ function readURL(input)
 	    reader.onload = function (e)
 	    {
 	    	xcoord.length = 0;
-	    	$("#selectedfacesbtn").css("display","none");	
 	    	$('#pic').attr('src', e.target.result);  
-	        $("#msg").html("<b>Uploaded image</b>");      
-	    	$("#pic").css("display","block");
-	    	$("#canvas").css("display","none");
+	    	$("#msg").html("<b>Uploaded image</b>");      
+	    	$(".canvas").remove();
+	    	$("#pic").css("display","block");	    	
+	    	$("#censor").attr("disabled",false);
+	    	$("#expressioncensor").attr("disabled",false);
 	    };
 
 	    reader.readAsDataURL(input.files[0]);
@@ -21,9 +22,9 @@ function readURL(input)
 }
 
 
+
 $(document).ready(function()
 {
-	
 	var emojisobj = { angry : document.getElementById("angry") ,
 				   happy : 	document.getElementById("happy") ,
 				   laugh : 	document.getElementById("laugh") ,
@@ -56,6 +57,7 @@ $(document).ready(function()
 
 function drawimg(canvas,ctx)
 {
+	
 	$("#canvas").css("display","block");
 	var pic = document.getElementById('pic');
 	var width = pic.naturalWidth;
@@ -77,11 +79,14 @@ function userselect(value)
 
 	if(value == 'all')
 	{		
+		$("#canvas").attr("title","");
 		allfaces(resultsobj);
 	}
 	else if(value == "selected")
 	{
-		$("#selectedfacesbtn").css("display","block");		
+		xcoord.length=0;
+		$("#canvas").attr("title","Click on faces to censor");
+		$('[data-toggle="tooltip"]').tooltip();
 		selectedfaces(resultsobj);	
 	}
 }
@@ -115,11 +120,15 @@ function selectedfaces(results)
 
 	var rect = canvas.getBoundingClientRect();
 	
+	xcoord.length = 0;
 	
 	$("#canvas").click(function(event)
 	{		
 		//console.log("hi");
 		//make changes for y coord
+
+		console.log("xcoord as soon as canvas is clicked :"+ JSON.stringify(xcoord));
+
 		var x = event.clientX - rect.left;
 		var y = event.clientY - rect.top ;
 		
@@ -136,19 +145,16 @@ function selectedfaces(results)
 		console.log("xcoord araay is :"+ JSON.stringify(xcoord));
 		var temp = new Set(xcoord)
     	xcoord = Array.from(temp);
-    	//console.log("selectedfaces are : "+JSON.stringify(xcoord));
-    })
+    	console.log("selectedfaces after applying set : "+JSON.stringify(xcoord));
 
 
-    $("#selectedfacesbtn").click(function()
-    {
- 		var emoji = document.getElementById('happy'); 
-		//console.log("selectedfaces are : "+JSON.stringify(xcoord));
-		if(xcoord.length == 0)
+    	var emoji = document.getElementById('happy');
+ 		
+		/*if(xcoord.length == 0)
 		{
-			alert("No face selected");
-		}
-		else
+			
+		}*/
+		if(xcoord.length !=0)
 		{
 			for(let i=0;i<xcoord.length;i++)
 			{
@@ -158,16 +164,21 @@ function selectedfaces(results)
 				//var str = String.fromCodePoint(0x1F604)
 				//ctx.strokeText(str,coord.x,coord.y,coord.width);
 			}
-			xcoord.length = 0;
 			$("#msg").html("<b>Faces censored: </b>");	
-		}			    	
-    })
+		}
+		else
+		{
+			alert("No face selected");
+		}
+    })   
 }
 
 function drawfacecanvas(results)
 {
 	console.log(JSON.stringify(results));	
-	
+
+	$(".canvas").remove();
+	$('<canvas id="canvas" class="center canvas" style="margin: 0 auto; display: none;border:1px solid black;" data-toggle="tooltip" ></canvas>').insertAfter("#pic");
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext("2d");
 
@@ -211,7 +222,8 @@ function drawexpressioncanvas(results,emojisobj)
 {
 	//console.log("Expressions results : " + JSON.stringify(emojisobj));
 
-
+	$(".canvas").remove();
+	$('<canvas id="canvas" class="center canvas" style="margin: 0 auto; display: none;border:1px solid black;" data-toggle="tooltip" ></canvas>').insertAfter("#pic");
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext("2d");
 
