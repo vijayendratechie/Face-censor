@@ -8,7 +8,7 @@ function readURL(input)
 
 	    reader.onload = function (e)
 	    {
-	    	$('<div id="cover"><div id="spinner" class="spinner-grow text-light"></div></div>').insertAfter(".container");
+	    	$('<div id="cover"><div id="spinner" class="spinner-grow text-light"></div></div>').insertAfter(".container-fluid");
 	    	xcoord.length = 0;
 	    	$('#pic').attr('src', e.target.result);  
 	    	$("#msg").html("<b>Uploaded image</b>");      
