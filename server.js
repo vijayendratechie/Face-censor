@@ -29,3 +29,8 @@ app.get("/canvas",function(req,res)
 {
 	res.render("canvas");
 })
+
+app.get("/help",function(req,res)
+{
+	res.render("help");
+})
