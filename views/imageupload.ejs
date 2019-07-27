@@ -18,6 +18,7 @@
 </head>
 <body>
 
+	<div class="container-fluid">
 	<div class="header">
 		<h1 align="center">Face Censor</h1>
 	</div>
@@ -36,13 +37,13 @@
 	      <font size="4" style="color: white"><b>Upload image : </b></font><input type='file' accept="image/*" onchange="readURL(this);" style="margin-left: 20px" />
 	    </li>
 	    <li class="nav-item">
-			<button id="censor" style="margin-left: 30px; margin-top: 7px; padding-bottom: 3px" disabled="">emoji censor</button>
+			<button class="btn btn-light" id="censor" style="margin-left: 30px; margin-top: 7px; padding-bottom: 3px" disabled="">emoji censor</button>
 	    </li>
 	    <li class="nav-item">
-	    	<button id="expressioncensor" style="margin-left: 30px;margin-top: 7px; padding-bottom: 3px" disabled="">emoji based on expression</button>
+	    	<button class="btn btn-light" id="expressioncensor" style="margin-left: 30px;margin-top: 7px; padding-bottom: 3px" disabled="">emoji based on expression</button>
 	    </li>
 	    <li class="nav-item">
-	    	<button id="help" class="btn btn-link btn-lg" style="margin-left: 30px;margin-top: 7px; padding-bottom: 3px"><a href="https://facecensor.herokuapp.com/help" style="color: white"><u>Help</u></a></button>
+	    	<button id="help" class="btn btn-link btn-lg" style="margin-left: 30px;margin-top: 7px; padding-bottom: 3px"><a href="http://localhost:3000/help" style="color: white"><u>Help</u></a></button>
 	    </li>	    
 	  </ul>
 	</nav>
@@ -71,7 +72,7 @@
 	  </div>
 	</div>
 
-	<div class="container">
+	
 
 		<!--<input type='file' onchange="readURL(this);" />
 		<button id="censor">emoji censor</button>
